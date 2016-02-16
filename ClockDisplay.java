@@ -17,6 +17,7 @@ public class ClockDisplay
     private NumberDisplay hours;
     private NumberDisplay minutes;
     private String displayString;    // simulates the actual display
+    private boolean miridiem;
     
     /**
      * Constructor for ClockDisplay objects. This constructor 
@@ -26,6 +27,7 @@ public class ClockDisplay
     {
         hours = new NumberDisplay(12);
         minutes = new NumberDisplay(60);
+        miridiem = true;
         updateDisplay();
     }
 
@@ -34,11 +36,12 @@ public class ClockDisplay
      * creates a new clock set at the time specified by the 
      * parameters.
      */
-    public ClockDisplay(int hour, int minute)
+    public ClockDisplay(int hour, int minute, boolean mirid)
     {
         hours = new NumberDisplay(12);
         minutes = new NumberDisplay(60);
-        setTime(hour, minute);
+        miridiem = true;
+        setTime(hour, minute, mirid);
     }
 
     /**
@@ -52,6 +55,15 @@ public class ClockDisplay
             hours.increment();
             if (hours.getValue() == 0){
                 hours.increment();
+                if (miridiem == true){
+                miridiem = false;
+                }
+                else if (miridiem == false){
+                miridiem = true;
+                }
+                else{
+                System.out.println("ERROR");
+                }
             }
         }
         updateDisplay();
@@ -61,10 +73,11 @@ public class ClockDisplay
      * Set the time of the display to the specified hour and
      * minute.
      */
-    public void setTime(int hour, int minute)
+    public void setTime(int hour, int minute, boolean mirid)
     {
         hours.setValue(hour);
         minutes.setValue(minute);
+        miridiem = mirid;
         updateDisplay();
     }
 
@@ -81,7 +94,16 @@ public class ClockDisplay
      */
     private void updateDisplay()
     {
-        displayString = hours.getDisplayValue() + ":" + 
-                        minutes.getDisplayValue();
+        if (miridiem == true){
+            displayString = hours.getDisplayValue() + ":" + 
+                        minutes.getDisplayValue() + " AM";
+                    }
+        else if (miridiem == false){
+            displayString = hours.getDisplayValue() + ":" + 
+                        minutes.getDisplayValue() + " PM";
+        }
+        else{
+        System.out.println("ERROR");
+        }
     }
 }
