@@ -17,7 +17,6 @@ public class ClockDisplay
     private NumberDisplay hours;
     private NumberDisplay minutes;
     private String displayString;    // simulates the actual display
-    private boolean miridiem;
     
     /**
      * Constructor for ClockDisplay objects. This constructor 
@@ -25,9 +24,8 @@ public class ClockDisplay
      */
     public ClockDisplay()
     {
-        hours = new NumberDisplay(12);
+        hours = new NumberDisplay(24);
         minutes = new NumberDisplay(60);
-        miridiem = true;
         updateDisplay();
     }
 
@@ -36,12 +34,11 @@ public class ClockDisplay
      * creates a new clock set at the time specified by the 
      * parameters.
      */
-    public ClockDisplay(int hour, int minute, boolean mirid)
+    public ClockDisplay(int hour, int minute)
     {
-        hours = new NumberDisplay(12);
+        hours = new NumberDisplay(24);
         minutes = new NumberDisplay(60);
-        miridiem = true;
-        setTime(hour, minute, mirid);
+        setTime(hour, minute);
     }
 
     /**
@@ -53,18 +50,6 @@ public class ClockDisplay
         minutes.increment();
         if(minutes.getValue() == 0) {  // it just rolled over!
             hours.increment();
-            if (hours.getValue() == 0){
-                hours.increment();
-                if (miridiem == true){
-                miridiem = false;
-                }
-                else if (miridiem == false){
-                miridiem = true;
-                }
-                else{
-                System.out.println("ERROR");
-                }
-            }
         }
         updateDisplay();
     }
@@ -73,11 +58,10 @@ public class ClockDisplay
      * Set the time of the display to the specified hour and
      * minute.
      */
-    public void setTime(int hour, int minute, boolean mirid)
+    public void setTime(int hour, int minute)
     {
         hours.setValue(hour);
         minutes.setValue(minute);
-        miridiem = mirid;
         updateDisplay();
     }
 
@@ -94,16 +78,12 @@ public class ClockDisplay
      */
     private void updateDisplay()
     {
-        if (miridiem == true){
+            if(hours.getDisplayValue()>0){
+                if(hours.getDisplayValue() == 0){
+                System.out.println("Recieved");
+                }
             displayString = hours.getDisplayValue() + ":" + 
-                        minutes.getDisplayValue() + " AM";
+                        minutes.getDisplayValue();
                     }
-        else if (miridiem == false){
-            displayString = hours.getDisplayValue() + ":" + 
-                        minutes.getDisplayValue() + " PM";
-        }
-        else{
-        System.out.println("ERROR");
-        }
     }
 }
